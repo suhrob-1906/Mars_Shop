@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="flex-1 flex items-center justify-center px-4 py-10">
+    <div class="max-w-xl w-full text-center animate-fade-in">
+        <h1 class="text-4xl md:text-5xl font-extrabold text-orange-500 mb-4">
+            Добро пожаловать в Mars Shop
+        </h1>
+        <p class="text-slate-600 mb-8">
+            Космический маркетплейс с марсианскими товарами. Войдите или зарегистрируйтесь,
+            чтобы попасть в главный каталог.
+        </p>
+
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+            <a href="{% url 'login' %}"
+               class="btn-primary w-full sm:w-auto justify-center py-3 text-lg">
+                Войти
+            </a>
+            <a href="{% url 'register' %}"
+               class="btn-primary w-full sm:w-auto justify-center py-3 text-lg btn-green">
+                Регистрация
+            </a>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

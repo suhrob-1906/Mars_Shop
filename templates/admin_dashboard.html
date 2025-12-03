@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="container mx-auto px-4 py-10">
+    <h1 class="text-3xl font-bold text-orange-600 mb-6">
+        Админский Дашборд
+    </h1>
+    <p class="text-slate-600 mb-6">
+        Общая статистика по магазину.
+    </p>
+
+    <div class="grid lg:grid-cols-3 gap-6 mb-8">
+        <div class="dashboard-card">
+            <h3 class="dashboard-card-title">Всего заказов</h3>
+            <p class="dashboard-big-number">{{ total_orders }}</p>
+        </div>
+        <div class="dashboard-card">
+            <h3 class="dashboard-card-title">Общая выручка</h3>
+            <p class="dashboard-big-number">{{ total_revenue }} ₽</p>
+        </div>
+        <div class="dashboard-card">
+            <h3 class="dashboard-card-title">Всего пользователей</h3>
+            <p class="dashboard-big-number">{{ total_users }}</p>
+        </div>
+    </div>
+
+    <div class="grid lg:grid-cols-2 gap-6">
+        <div class="dashboard-card">
+            <h3 class="dashboard-card-title">Выручка по дням (30 дней)</h3>
+            <canvas id="adminRevenueChart"></canvas>
+        </div>
+        <div class="dashboard-card">
+            <h3 class="dashboard-card-title">Категории по продажам</h3>
+            <canvas id="adminCategoryChart"></canvas>
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="{% static 'js/dashboard.js' %}"></script>
+<script>
+    initAdminDashboard();
+</script>
+{% endblock %}

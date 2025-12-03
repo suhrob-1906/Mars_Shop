@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="container mx-auto px-4 py-12">
+    <div class="max-w-xl mx-auto bg-white rounded-2xl shadow-xl border border-orange-100 p-6">
+        <h1 class="text-2xl font-extrabold text-orange-600 mb-4">
+            Отзыв о товаре
+        </h1>
+        <p class="font-semibold text-slate-800 mb-1">
+            {{ product.name }}
+        </p>
+        <p class="text-xs text-slate-400 mb-4">
+            Оставить отзыв можно только если товар был куплен.
+        </p>
+
+        <form method="post" class="space-y-4">
+            {% csrf_token %}
+
+            <div>
+                <label class="auth-label">Оценка (1–5)</label>
+                <select name="rating" class="auth-input" required>
+                    {% for i in "12345" %}
+                        <option value="{{ forloop.counter }}">{{ forloop.counter }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div>
+                <label class="auth-label">Комментарий (необязательно)</label>
+                <textarea name="text" rows="4" class="auth-input"
+                          placeholder="Расскажите, понравился ли вам товар"></textarea>
+            </div>
+
+            <button class="btn-primary w-full py-3 text-lg">
+                Отправить отзыв
+            </button>
+        </form>
+
+        <p class="mt-4 text-center text-sm text-slate-500">
+            <a href="{% url 'product_detail' product.id %}" class="hover:text-orange-500">
+                ← Назад к товару
+            </a>
+        </p>
+    </div>
+</section>
+
+{% endblock %}

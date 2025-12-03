@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<section class="min-h-[80vh] flex items-center justify-center px-4">
+    <div class="auth-card">
+        <div class="auth-card-inner">
+
+            <h1 class="auth-title">Вход в Mars Shop</h1>
+            <p class="auth-subtitle">Введите имя пользователя и пароль, чтобы открыть каталог</p>
+
+            {% if errors %}
+                <div class="auth-error-box mt-4">
+                    {% for e in errors %}
+                        <p>• {{ e }}</p>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            <form method="post" class="space-y-4 mt-6">
+                {% csrf_token %}
+
+                <div>
+                    <label class="auth-label">Имя пользователя</label>
+                    <input type="text" name="username" class="auth-input" required>
+                </div>
+
+                <div>
+                    <label class="auth-label">Пароль</label>
+                    <input type="password" name="password" class="auth-input" required>
+                </div>
+
+                <button class="btn-primary w-full py-3 text-lg">
+                    Войти
+                </button>
+            </form>
+
+            <p class="mt-4 text-center opacity-80 text-sm">
+                Нет аккаунта?
+                <a href="{% url 'register' %}" class="text-orange-500 hover:underline">
+                    Зарегистрироваться
+                </a>
+            </p>
+        </div>
+    </div>
+</section>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="container mx-auto px-4 py-10">
+    <div class="grid md:grid-cols-2 gap-10">
+        <div>
+            {% static 'images/placeholder.png' as placeholder_img %}
+            <img src="{{ product.photo_url|default:placeholder_img }}"
+                 class="w-full rounded-2xl shadow-lg border border-orange-100 object-cover max-h-[520px]"
+                 alt="{{ product.name }}">
+        </div>
+        <div>
+            <h1 class="text-3xl md:text-4xl font-extrabold text-orange-600 mb-3">
+                {{ product.name }}
+            </h1>
+
+            {% if avg_rating %}
+                <div class="flex items-center gap-2 mb-3">
+                    <span class="text-sm text-slate-500">Средний рейтинг:</span>
+                    <span class="text-yellow-500 font-bold text-xl">{{ avg_rating }}</span>
+                    <span class="text-yellow-400">★</span>
+                </div>
+            {% endif %}
+
+            <p class="text-slate-700 mb-6">
+                {{ product.description|default:"Описания пока нет, но это точно что-то марсианское." }}
+            </p>
+
+            <p class="text-3xl font-bold text-orange-500 mb-4">
+                {{ product.price }} ₽
+            </p>
+
+            <div class="flex flex-wrap gap-3 mb-6">
+                <button type="button"
+                        onclick="addToCart({{ product.id }})"
+                        class="btn-primary px-6 py-3 text-lg">
+                    В корзину
+                </button>
+
+                {% if can_review %}
+                    <a href="{% url 'add_review' product.id %}"
+                       class="btn-primary btn-green px-6 py-3 text-lg">
+                        Оставить отзыв
+                    </a>
+                {% elif user.is_authenticated %}
+                    <span class="text-sm text-slate-500">
+                        Оставить отзыв можно только после покупки товара.
+                    </span>
+                {% else %}
+                    <span class="text-sm text-slate-500">
+                        Войдите в аккаунт, чтобы оставить отзыв.
+                    </span>
+                {% endif %}
+            </div>
+
+            <div class="mt-4">
+                <a href="{% url 'index' %}" class="text-sm text-slate-500 hover:text-orange-500">
+                    ← Вернуться к каталогу
+                </a>
+            </div>
+        </div>
+    </div>
+
+    {% if reviews %}
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-orange-600 mb-4">Отзывы</h2>
+            <div class="space-y-4">
+                {% for r in reviews %}
+                    <div class="bg-white border border-slate-200 rounded-xl p-4 shadow-sm">
+                        <div class="flex justify-between items-center mb-1">
+                            <span class="font-semibold text-slate-800">{{ r.user.username }}</span>
+                            <span class="text-yellow-500 text-sm">
+                                {% for i in "12345" %}
+                                    {% if forloop.counter <= r.rating %}★{% else %}☆{% endif %}
+                                {% endfor %}
+                            </span>
+                        </div>
+                        <p class="text-slate-700 text-sm">{{ r.text|default:"Без комментария" }}</p>
+                        <p class="text-xs text-slate-400 mt-1">
+                            {{ r.created_at|date:"d.m.Y H:i" }}
+                        </p>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% else %}
+        <div class="mt-12">
+            <h2 class="text-2xl font-bold text-orange-600 mb-2">Отзывы</h2>
+            <p class="text-slate-500 text-sm">
+                Отзывов пока нет. Станьте первым, кто оставит отзыв!
+            </p>
+        </div>
+    {% endif %}
+</section>
+
+{% endblock %}
+
+{% block scripts %}
+<script src="{% static 'js/cart.js' %}"></script>
+{% endblock %}

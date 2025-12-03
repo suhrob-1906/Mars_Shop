@@ -1,0 +1,54 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<section class="container mx-auto px-4 py-12">
+    <h1 class="text-3xl font-extrabold text-orange-600 mb-6 text-center">
+        Оставить отзывы по заказу #{{ order.id }}
+    </h1>
+
+    {% if products_info %}
+        {% static 'images/placeholder.png' as placeholder_img %}
+        <div class="space-y-4 max-w-2xl mx-auto">
+            {% for info in products_info %}
+                <div class="bg-white border border-slate-200 rounded-xl p-4 flex items-center justify-between shadow-sm">
+                    <div class="flex items-center gap-4">
+                        <img src="{{ info.product.photo_url|default:placeholder_img }}"
+                             alt="{{ info.product.name }}"
+                             class="h-16 w-16 object-cover rounded-lg border border-slate-200">
+                        <div>
+                            <p class="font-semibold text-slate-800">{{ info.product.name }}</p>
+                            <p class="text-xs text-slate-500">
+                                В заказе: {{ info.quantity }} шт.
+                            </p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        {% if info.has_review %}
+                            <span class="text-xs px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 border border-emerald-200">
+                                Отзыв уже оставлен
+                            </span>
+                        {% else %}
+                            <a href="{% url 'add_review' info.product.id %}"
+                               class="btn-primary btn-green text-sm px-4 py-2">
+                                Оставить отзыв
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p class="text-center text-slate-500">
+            В этом заказе нет товаров для отзывов.
+        </p>
+    {% endif %}
+
+    <div class="mt-8 text-center">
+        <a href="{% url 'index' %}" class="text-sm text-slate-500 hover:text-orange-500">
+            ← Вернуться на главную
+        </a>
+    </div>
+</section>
+
+{% endblock %}
