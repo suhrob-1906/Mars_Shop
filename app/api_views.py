@@ -1,3 +1,4 @@
+# app/api_views.py
 from datetime import timedelta
 
 from django.db.models import Sum, F
@@ -186,8 +187,9 @@ class OrderCreateAPIView(APIView):
 class SalesStatsAPIView(APIView):
     """
     /api/stats/sales/?days=30 — для line-графика по дням.
+    Теперь доступно всем (и главная, и админка).
     """
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
         days = int(request.query_params.get("days", 30))
@@ -213,8 +215,9 @@ class SalesStatsAPIView(APIView):
 class CategoriesStatsAPIView(APIView):
     """
     /api/stats/categories/?days=30 — для pie-чарта по категориям.
+    Теперь тоже доступно всем.
     """
-    permission_classes = (permissions.IsAdminUser,)
+    permission_classes = (permissions.AllowAny,)
 
     def get(self, request):
         days = int(request.query_params.get("days", 30))
